@@ -7,7 +7,7 @@ struct EditBudgetItemView: View {
     let item: BudgetItem
     
     @State private var title: String
-    @State private var amount: Double
+    @State private var amountString: String
     @State private var date: Date
     @State private var isInflux: Bool
     @State private var isLoading = false
@@ -16,7 +16,7 @@ struct EditBudgetItemView: View {
         self._budget = budget
         self.item = item
         _title = State(initialValue: item.title)
-        _amount = State(initialValue: item.amount)
+        _amountString = State(initialValue: String(item.amount))
         _date = State(initialValue: item.date)
         _isInflux = State(initialValue: item.isInflux)
     }
@@ -29,15 +29,7 @@ struct EditBudgetItemView: View {
                         TextField("Title", text: $title)
                             .font(AppTheme.bodyFont)
                         
-                        HStack {
-                            Text("Amount")
-                                .font(AppTheme.bodyFont)
-                            Spacer()
-                            TextField("Amount", value: $amount, format: .currency(code: "USD"))
-                                .keyboardType(.decimalPad)
-                                .multilineTextAlignment(.trailing)
-                                .font(AppTheme.bodyFont)
-                        }
+                        AmountField(text: $amountString, placeholder: "Amount")
                         
                         DatePicker("Date", selection: $date, displayedComponents: .date)
                             .font(AppTheme.bodyFont)
@@ -74,7 +66,7 @@ struct EditBudgetItemView: View {
                     }
                     .font(AppTheme.bodyFont.bold())
                     .foregroundColor(AppTheme.primaryColor)
-                    .disabled(title.isEmpty || amount == 0 || isLoading)
+                    .disabled(title.isEmpty || amountString.isEmpty || isLoading)
                 }
             }
         }
@@ -89,7 +81,7 @@ struct EditBudgetItemView: View {
         if let index = updatedBudget.items.firstIndex(where: { $0.id == item.id }) {
             var updatedItem = item
             updatedItem.title = title
-            updatedItem.amount = amount
+            updatedItem.amount = Double(amountString) ?? 0
             updatedItem.date = date
             updatedItem.isInflux = isInflux
             

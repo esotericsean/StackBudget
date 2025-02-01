@@ -1,0 +1,1 @@
+// Delete this file since we're using @main in StackBudgetWidget.swift 

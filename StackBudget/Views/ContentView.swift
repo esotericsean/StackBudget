@@ -67,13 +67,12 @@ struct ContentView: View {
                             isEven: index % 2 == 0,
                             budget: $budget
                         )
-                            .transition(.asymmetric(
-                                insertion: .scale.combined(with: .opacity),
-                                removal: .scale.combined(with: .opacity)
-                            ))
+                        .transition(.asymmetric(
+                            insertion: .scale.combined(with: .opacity),
+                            removal: .scale.combined(with: .opacity)
+                        ))
                     }
                 }
-                .onDelete(perform: deleteItems)
             }
             
             // Final Balance Section
@@ -93,20 +92,7 @@ struct ContentView: View {
         }
         .navigationTitle(budget.title)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    HStack {
-                        Image(systemName: "chevron.left")
-                        Text("Budgets")
-                    }
-                    .foregroundColor(AppTheme.primaryColor)
-                }
-            }
-            
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack(spacing: AppTheme.spacing) {
                     Button {
@@ -238,21 +224,6 @@ struct BudgetItemRow: View {
             EditBudgetItemView(budget: $budget, item: item)
                 .environmentObject(budgetManager)
         }
-        .swipeActions(edge: .leading) {
-            Button {
-                // Duplicate item
-            } label: {
-                Label("Duplicate", systemImage: "doc.on.doc")
-            }
-            .tint(AppTheme.primaryColor)
-        }
-        .swipeActions(edge: .trailing) {
-            Button(role: .destructive) {
-                // Delete item
-            } label: {
-                Label("Delete", systemImage: "trash")
-            }
-        }
     }
     
     private func formatCurrency(_ amount: Double) -> String {
@@ -285,4 +256,4 @@ struct ContentView_Previews: PreviewProvider {
                 .environmentObject(BudgetManager())
         }
     }
-} 
+}

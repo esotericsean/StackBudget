@@ -12,4 +12,4 @@ extension AnyTransition {
         .scale(scale: 0.9)
             .combined(with: .opacity)
     }
-} 
+}

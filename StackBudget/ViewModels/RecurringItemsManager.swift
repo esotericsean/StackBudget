@@ -46,4 +46,4 @@ class RecurringItemsManager: ObservableObject {
             recurringItems = []
         }
     }
-} 
+}

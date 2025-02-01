@@ -100,4 +100,4 @@ struct AddRecurringItemView: View {
         components.day = day
         return calendar.date(from: components) ?? Date()
     }
-} 
+}

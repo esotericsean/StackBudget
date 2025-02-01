@@ -20,5 +20,8 @@ struct EmptyStateView: View {
                 .multilineTextAlignment(.center)
         }
         .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .listRowInsets(EdgeInsets())
+        .background(AppTheme.surfaceBackground)
     }
 } 

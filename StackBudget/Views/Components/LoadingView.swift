@@ -15,4 +15,4 @@ struct LoadingView: View {
                 }
             }
     }
-} 
+}

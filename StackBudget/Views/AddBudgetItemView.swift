@@ -1,5 +1,5 @@
 import SwiftUI
-import class StackBudget.HapticManager
+import StackBudgetShared
 
 struct AddBudgetItemView: View {
     @Environment(\.dismiss) var dismiss
@@ -8,7 +8,7 @@ struct AddBudgetItemView: View {
     @Binding var budget: StackBudget
     
     @State private var title = ""
-    @State private var amount = 0.0
+    @State private var amountString = ""
     @State private var date = Date()
     @State private var isInflux = false
     @State private var isRecurring = false
@@ -21,15 +21,7 @@ struct AddBudgetItemView: View {
                     TextField("Title", text: $title)
                         .font(AppTheme.bodyFont)
                     
-                    HStack {
-                        Text("Amount")
-                            .font(AppTheme.bodyFont)
-                        Spacer()
-                        TextField("Amount", value: $amount, format: .currency(code: "USD"))
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.trailing)
-                            .font(AppTheme.bodyFont)
-                    }
+                    AmountField(text: $amountString, placeholder: "Amount")
                     
                     DatePicker("Date", selection: $date, displayedComponents: .date)
                         .font(AppTheme.bodyFont)
@@ -69,7 +61,7 @@ struct AddBudgetItemView: View {
                     }
                     .font(AppTheme.bodyFont.bold())
                     .foregroundColor(AppTheme.primaryColor)
-                    .disabled(title.isEmpty || amount == 0)
+                    .disabled(title.isEmpty || amountString.isEmpty)
                 }
             }
             .overlay {
@@ -85,7 +77,7 @@ struct AddBudgetItemView: View {
         let selectedDay = Calendar.current.component(.day, from: date)
         let newItem = BudgetItem(
             title: title,
-            amount: amount,
+            amount: Double(amountString) ?? 0.0,
             date: date,
             isInflux: isInflux,
             isRecurring: isRecurring,
@@ -118,4 +110,4 @@ struct AddBudgetItemView_Previews: PreviewProvider {
             .environmentObject(BudgetManager())
             .environmentObject(RecurringItemsManager())
     }
-} 
+}

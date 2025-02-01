@@ -26,7 +26,7 @@ struct BudgetListView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 List {
                     if sortedBudgets.isEmpty {
@@ -37,8 +37,10 @@ struct BudgetListView: View {
                         )
                     } else {
                         ForEach(sortedBudgets, id: \.self) { budgetId in
-                            if let budget = budgetManager.budgets[budgetId] {
-                                NavigationLink(destination: ContentView(budget: budgetBinding(for: budgetId))) {
+                            if let budget = budgetManager.budgets[safe: budgetId] {
+                                NavigationLink {
+                                    ContentView(budget: budgetBinding(for: budgetId))
+                                } label: {
                                     VStack(alignment: .leading, spacing: 8) {
                                         Text(budget.title)
                                             .font(AppTheme.headlineFont)
@@ -54,24 +56,12 @@ struct BudgetListView: View {
                                         }
                                     }
                                     .padding(.vertical, 4)
-                                    .contextMenu {
-                                        Button {
-                                            // Duplicate budget
-                                        } label: {
-                                            Label("Duplicate", systemImage: "doc.on.doc")
-                                        }
-                                        
-                                        Button(role: .destructive) {
-                                            // Delete budget
-                                        } label: {
-                                            Label("Delete", systemImage: "trash")
-                                        }
-                                    }
                                 }
                                 .listRowBackground(AppTheme.cardBackground)
+                                .swipeActions(edge: .leading, allowsFullSwipe: false) { }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: false) { }
                             }
                         }
-                        .onDelete(perform: deleteBudgets)
                     }
                 }
                 
@@ -123,6 +113,7 @@ struct BudgetListView: View {
                 RecurringItemsView()
                     .environmentObject(recurringItemsManager)
             }
+            .scrollContentBackground(.hidden)
         }
     }
     

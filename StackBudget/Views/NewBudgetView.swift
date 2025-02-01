@@ -6,7 +6,7 @@ struct NewBudgetView: View {
     @EnvironmentObject var recurringItemsManager: RecurringItemsManager
     
     @State private var title = ""
-    @State private var initialBalance = 0.0
+    @State private var initialBalanceString = ""
     @State private var includeRecurring = true
     @State private var budgetMonth = Date()
     @State private var selectedColorName = Color.customPalette[0].name
@@ -24,9 +24,7 @@ struct NewBudgetView: View {
                             Text("Current Balance")
                                 .font(AppTheme.bodyFont)
                             Spacer()
-                            TextField("Amount", value: $initialBalance, format: .currency(code: "USD"))
-                                .keyboardType(.decimalPad)
-                                .multilineTextAlignment(.trailing)
+                            AmountField(text: $initialBalanceString, placeholder: "Amount")
                                 .font(AppTheme.bodyFont)
                         }
                     }
@@ -113,7 +111,7 @@ struct NewBudgetView: View {
         var items = [
             BudgetItem(
                 title: "Current Balance",
-                amount: initialBalance,
+                amount: Double(initialBalanceString.replacingOccurrences(of: "[^0-9.]", with: "", options: .regularExpression)) ?? 0.0,
                 date: budgetMonth,
                 isCurrentBalance: true
             )
@@ -145,4 +143,4 @@ struct NewBudgetView: View {
         isLoading = false
         dismiss()
     }
-} 
+}
