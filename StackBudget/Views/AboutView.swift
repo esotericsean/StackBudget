@@ -55,7 +55,7 @@ struct AboutView: View {
                     
                     // Social Links
                     VStack(spacing: 12) {
-                        Button {
+                        Button {#imageLiteral(resourceName: "simulator_screenshot_1C8E810B-C32A-4A06-820E-BFE8CD015914.png")
                             openURL("mailto:sean@seanduran.com")
                         } label: {
                             HStack {
