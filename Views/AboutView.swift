@@ -5,51 +5,106 @@ struct AboutView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                Section {
-                    VStack(spacing: 16) {
-                        Image(systemName: "chart.bar.fill")
-                            .font(.system(size: 60))
-                            .foregroundColor(.blue)
-                            .padding(.top, 20)
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Profile Image
+                    Image("profile") // Add your profile image to Assets.xcassets
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 120, height: 120)
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .stroke(AppTheme.primaryColor, lineWidth: 2)
+                        )
+                        .shadow(radius: 5)
+                    
+                    // Made By Section
+                    Text("Made by")
+                        .font(AppTheme.subheadlineFont)
+                        .foregroundColor(.secondary)
+                    Text("Sean Duran")
+                        .font(AppTheme.headlineFont.bold())
+                    
+                    // About Me Section
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("About Me")
+                            .font(AppTheme.headlineFont)
                         
-                        Text("StackBudget")
-                            .font(.title.bold())
-                        
-                        Text("Version 1.0")
+                        Text("Hi, I'm esotericsean/esotericmods. I'm a YouTuber and game developer. I love Game Boys, dogs, my wife, and my kids. Feel free to say hi and let me know if you guys have any issues with this app! :)")
+                            .font(AppTheme.bodyFont)
                             .foregroundColor(.secondary)
+                            .multilineTextAlignment(.leading)
                     }
-                    .frame(maxWidth: .infinity)
-                    .listRowBackground(Color.clear)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(AppTheme.cardBackground)
+                    .cornerRadius(12)
+                    
+                    // Social Links
+                    VStack(spacing: 12) {
+                        Button {
+                            openURL("mailto:your.email@example.com")
+                        } label: {
+                            HStack {
+                                Image(systemName: "envelope.fill")
+                                Text("Email")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(AppTheme.primaryColor)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        }
+                        
+                        Button {
+                            openURL("https://your-website.com")
+                        } label: {
+                            HStack {
+                                Image(systemName: "globe")
+                                Text("Website")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(AppTheme.primaryColor)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        }
+                        
+                        Button {
+                            openURL("https://github.com/your-username")
+                        } label: {
+                            HStack {
+                                Image(systemName: "chevron.left.forwardslash.chevron.right")
+                                Text("GitHub")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(AppTheme.primaryColor)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        }
+                    }
+                    .padding(.horizontal)
                 }
-                
-                Section {
-                    Text("StackBudget helps you track your monthly expenses and income with a simple, cheerful interface. Watch your savings grow month by month!")
-                        .foregroundColor(.secondary)
-                        .padding(.vertical, 8)
-                }
-                
-                Section(header: Text("Features")) {
-                    FeatureRow(icon: "repeat.circle.fill", title: "Recurring Items", description: "Automatically add regular expenses and income")
-                    FeatureRow(icon: "paintpalette.fill", title: "Custom Themes", description: "Personalize each budget with colors")
-                    FeatureRow(icon: "chart.line.uptrend.xyaxis", title: "Balance Tracking", description: "See your running balance for each transaction")
-                }
-                
-                Section {
-                    Text("Made with ❤️ in 2024")
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .foregroundColor(.secondary)
-                }
+                .padding()
             }
+            .navigationTitle("About")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         dismiss()
                     }
-                    .foregroundColor(.blue)
+                    .foregroundColor(AppTheme.primaryColor)
                 }
             }
+        }
+    }
+    
+    private func openURL(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url)
         }
     }
 }

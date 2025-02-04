@@ -71,6 +71,21 @@ struct ContentView: View {
                             insertion: .scale.combined(with: .opacity),
                             removal: .scale.combined(with: .opacity)
                         ))
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                withAnimation {
+                                    if let index = budget.items.firstIndex(where: { $0.id == item.id }) {
+                                        var updatedBudget = budget
+                                        updatedBudget.items.remove(at: index)
+                                        budget = updatedBudget
+                                        budgetManager.updateBudget(updatedBudget)
+                                        HapticManager.notification(type: .success)
+                                    }
+                                }
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                     }
                 }
             }
